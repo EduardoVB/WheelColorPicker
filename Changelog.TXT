@@ -1,0 +1,1 @@
+2020-07-28 added hWnd property to the UserControl
