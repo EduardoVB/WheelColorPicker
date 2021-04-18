@@ -826,7 +826,7 @@ Private Sub InitWheel()
     
     mCx = picWheel.ScaleWidth / 2
     mCy = picWheel.ScaleHeight / 2
-    mDiameter = picWheel.ScaleWidth - 8
+    mDiameter = picWheel.ScaleWidth - 16
     mRadius = mDiameter / 2
     
     picAux.Move picAux.Left, picAux.Top, picWheel.Width, picWheel.Height
@@ -843,7 +843,7 @@ Private Sub InitWheel()
     End If
     picAux.FillColor = RGB(255, 255, iB2)
     picAux.Cls
-    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius, RGB(255, 255, iB2)
+    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius + 2, RGB(255, 255, iB2)
     Set iPic = picAux.Image
     picAux.Cls
     
@@ -880,7 +880,7 @@ Private Sub InitWheel()
     picAux.Cls
     picAux.FillStyle = vbFSTransparent
     picAux.DrawWidth = 5
-    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius, RGB(255, 255, iB2)
+    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius + 2, RGB(255, 255, iB2)
     Set iPic = picAux.Image
     picAux.Cls
     
@@ -898,7 +898,7 @@ Private Sub InitWheel()
     
     iCenterX = mCx * 100 - 50
     iCenterY = mCy * 100 - 50
-    iRadius = mRadius * 100 + 55
+    iRadius = (mRadius + 2) * 100 + 55
     ' find one of the pixels that belong to the border
     iX = 0
     iY = 0
@@ -917,7 +917,7 @@ Private Sub InitWheel()
     ReDim mBorderPixels(iUb)
     ReDim mBorderPixels_Alpha(iUb)
     iIndexPixBorder = 0
-    If (iX > 0) And (iY) > 0 Then
+    If (iX > 0) And (iY > 0) Then
         ReDim iPix_XY(mBytesCount)
         iUbp = 1000
         ReDim iPixToCheck(iUbp)
@@ -2141,7 +2141,7 @@ Private Sub SetPointer(Optional X As Single = -1, Optional Y As Single)
 '        iY2 = iY2 - 1
 '    End If
     
-    iColorBrightness = GetColorBrightness(picWheel.Point(iX2, iY2))
+    iColorBrightness = GetColorBrightness(mColor)
     If iColorBrightness > 110 Then
         If (iColorBrightness > 200) Then
             iPointerColor = vbWhite
