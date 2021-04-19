@@ -7,7 +7,7 @@ Begin VB.UserControl ColorWheel
    EditAtDesignTime=   -1  'True
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   7.8
+      Size            =   7.5
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -24,9 +24,9 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       Height          =   2124
       Left            =   2904
-      ScaleHeight     =   177
+      ScaleHeight     =   142
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   11
+      ScaleWidth      =   9
       TabIndex        =   0
       Top             =   120
       Width           =   132
@@ -41,7 +41,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       Height          =   228
       Left            =   72
-      ScaleHeight     =   228
+      ScaleHeight     =   225
       ScaleWidth      =   780
       TabIndex        =   2
       TabStop         =   0   'False
@@ -103,7 +103,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -112,9 +112,9 @@ Begin VB.UserControl ColorWheel
       EndProperty
       Height          =   372
       Left            =   720
-      ScaleHeight     =   31
+      ScaleHeight     =   25
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   27
+      ScaleWidth      =   22
       TabIndex        =   8
       TabStop         =   0   'False
       Top             =   -48
@@ -128,7 +128,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -138,9 +138,9 @@ Begin VB.UserControl ColorWheel
       ForeColor       =   &H80000008&
       Height          =   2124
       Left            =   2496
-      ScaleHeight     =   177
+      ScaleHeight     =   142
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   27
+      ScaleWidth      =   22
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   144
@@ -153,7 +153,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -163,9 +163,9 @@ Begin VB.UserControl ColorWheel
       ForeColor       =   &H80000008&
       Height          =   2124
       Left            =   144
-      ScaleHeight     =   177
+      ScaleHeight     =   142
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   187
+      ScaleWidth      =   150
       TabIndex        =   6
       TabStop         =   0   'False
       Top             =   168
@@ -2076,7 +2076,7 @@ Private Sub GetXYSameAngleInsideCircle(X As Single, Y As Single)
         iAngle = Atn(iVert / iHorz)
     End If
     
-    iRadius = mRadius * 1.02
+    iRadius = mRadius * 1.01
     iX2 = Cos(iAngle) * iRadius + mCx
     iY2 = Sin(iAngle) * iRadius + mCy
     If iHorz < 0 Then
