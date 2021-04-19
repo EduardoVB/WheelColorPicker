@@ -1,1 +1,2 @@
+2021-04-19 improved ability to pick pure colors in the wheel
 2020-07-28 added hWnd property to the UserControl

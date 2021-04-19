@@ -1458,7 +1458,7 @@ End Sub
 Private Sub picWheel_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If mSelectingColor Then
         If PixelIsInCircle(X, Y) Then
-            mPureColor = GetWheelColor(X, Y)
+            mPureColor = EnsurePrimary(GetWheelColor(X, Y))
             If mSelectionParameter = cdParameterLuminance Then
                 ColorRGBToCurrentColorSystem mPureColor, mH, 0&, mS
             ElseIf mSelectionParameter = cdParameterHue Then
@@ -1481,7 +1481,7 @@ Private Sub picWheel_MouseMove(Button As Integer, Shift As Integer, X As Single,
             PointerVisible = False
         Else
             GetXYSameAngleInsideCircle X, Y
-            mPureColor = GetWheelColor(X, Y)
+            mPureColor = EnsurePrimary(GetWheelColor(X, Y))
             If mSelectionParameter = cdParameterLuminance Then
                 ColorRGBToCurrentColorSystem mPureColor, mH, 0&, mS
             ElseIf mSelectionParameter = cdParameterHue Then
@@ -3073,3 +3073,34 @@ End Function
 Public Property Get hWnd() As Long
     hWnd = UserControl.hWnd
 End Property
+
+Private Function EnsurePrimary(nColor As Long, Optional nTolerance As Byte = 5) As Long
+    Dim iRGB As RGBQuad
+    Dim iHight As Byte
+    Dim iLow As Byte
+    
+    iHight = 255 - nTolerance
+    iLow = nTolerance
+    
+    CopyMemory iRGB, nColor, 4
+    If ((iRGB.R >= iHight) Or (iRGB.R <= iLow)) And ((iRGB.G >= iHight) Or (iRGB.G <= iLow)) And ((iRGB.B >= iHight) Or (iRGB.B <= iLow)) Then
+        If iRGB.R >= iHight Then
+            iRGB.R = 255
+        Else
+            iRGB.R = 0
+        End If
+        If iRGB.G >= iHight Then
+            iRGB.G = 255
+        Else
+            iRGB.G = 0
+        End If
+        If iRGB.B >= iHight Then
+            iRGB.B = 255
+        Else
+            iRGB.B = 0
+        End If
+        CopyMemory EnsurePrimary, iRGB, 4
+    Else
+        EnsurePrimary = nColor
+    End If
+End Function
