@@ -412,6 +412,7 @@ Private mUserControlHwnd As Long
 Private mRadialParameter As CDColorWheelParameterConstants ' this parameter increases its value from the center of the wheel to the periphery
 Private mAxialParameter As CDColorWheelParameterConstants ' this parameter changes its value with the different angles to the center of the wheel
 Private mParametersCaptions(5) As String
+Private mSelectionFromOutside As Boolean
 
 Private Const cDefaultColor As Long = &H808080
 Private Const cDefaultSelectionParametersAvailable As Long = cdSelectionParametersLumAndSat
@@ -826,7 +827,7 @@ Private Sub InitWheel()
     
     mCx = picWheel.ScaleWidth / 2
     mCy = picWheel.ScaleHeight / 2
-    mDiameter = picWheel.ScaleWidth - 16
+    mDiameter = picWheel.ScaleWidth - 8
     mRadius = mDiameter / 2
     
     picAux.Move picAux.Left, picAux.Top, picWheel.Width, picWheel.Height
@@ -843,7 +844,7 @@ Private Sub InitWheel()
     End If
     picAux.FillColor = RGB(255, 255, iB2)
     picAux.Cls
-    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius + 2, RGB(255, 255, iB2)
+    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius, RGB(255, 255, iB2)
     Set iPic = picAux.Image
     picAux.Cls
     
@@ -880,7 +881,7 @@ Private Sub InitWheel()
     picAux.Cls
     picAux.FillStyle = vbFSTransparent
     picAux.DrawWidth = 5
-    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius + 2, RGB(255, 255, iB2)
+    picAux.Circle (picAux.ScaleWidth / 2 - 1, picAux.ScaleHeight / 2 - 1), mRadius, RGB(255, 255, iB2)
     Set iPic = picAux.Image
     picAux.Cls
     
@@ -898,7 +899,7 @@ Private Sub InitWheel()
     
     iCenterX = mCx * 100 - 50
     iCenterY = mCy * 100 - 50
-    iRadius = (mRadius + 2) * 100 + 55
+    iRadius = mRadius * 100 + 55
     ' find one of the pixels that belong to the border
     iX = 0
     iY = 0
@@ -917,7 +918,7 @@ Private Sub InitWheel()
     ReDim mBorderPixels(iUb)
     ReDim mBorderPixels_Alpha(iUb)
     iIndexPixBorder = 0
-    If (iX > 0) And (iY > 0) Then
+    If (iX > 0) And (iY) > 0 Then
         ReDim iPix_XY(mBytesCount)
         iUbp = 1000
         ReDim iPixToCheck(iUbp)
@@ -1480,6 +1481,7 @@ Private Sub picWheel_MouseMove(Button As Integer, Shift As Integer, X As Single,
             mClickingWheel = False
             PointerVisible = False
         Else
+            mSelectionFromOutside = True
             GetXYSameAngleInsideCircle X, Y
             mPureColor = EnsurePrimary(GetWheelColor(X, Y))
             If mSelectionParameter = cdParameterLuminance Then
@@ -1503,6 +1505,7 @@ Private Sub picWheel_MouseMove(Button As Integer, Shift As Integer, X As Single,
             mClickingWheel = False
             SetPointer X, Y
             PointerVisible = True
+            mSelectionFromOutside = False
         End If
     End If
 End Sub
@@ -1565,7 +1568,9 @@ Private Function SetColor(Value As Long) As Boolean
                 End If
                 If mH = mH_Max Then mH = 0
                 If Not (mSelectionParameter = cdParameterLuminance) Or mChangingColorSystemOrInitializing Or mChangingParameter Then
-                    mL = iL1
+                    If Not (mChangingShade And ((mSelectionParameter = cdParameterRed) Or (mSelectionParameter = cdParameterGreen) Or (mSelectionParameter = cdParameterBlue)) And (mColorSystem = cdColorSystemHSV)) Then
+                        mL = iL1
+                    End If
                 End If
                 'End If
             End If
@@ -2076,7 +2081,7 @@ Private Sub GetXYSameAngleInsideCircle(X As Single, Y As Single)
         iAngle = Atn(iVert / iHorz)
     End If
     
-    iRadius = mRadius * 1.01
+    iRadius = mRadius * 1.02
     iX2 = Cos(iAngle) * iRadius + mCx
     iY2 = Sin(iAngle) * iRadius + mCy
     If iHorz < 0 Then
@@ -2537,8 +2542,32 @@ Private Sub ColorRGBToCurrentColorSystem(nColorRGB As Long, nHue As Double, nLum
         nHue = CDbl(iH1)
         nLuminance = CDbl(iL1)
         nSaturation = CDbl(iS1)
+        If mSelectionFromOutside Then
+            If mSelectionParameter = cdParameterSaturation Then
+                nLuminance = 240
+                nColorRGB = ColorHLSToRGB(nHue, nLuminance, nSaturation)
+            End If
+        End If
     Else
         ColorRGBToHSV nColorRGB, nHue, nLuminance, nSaturation
+        If mSelectionFromOutside Then
+            If mSelectionParameter = cdParameterLuminance Then
+                If nSaturation <> 100 Then
+                    nSaturation = 100
+                    nColorRGB = ColorHSVToRGB(nHue, nLuminance, nSaturation)
+                End If
+            ElseIf mSelectionParameter = cdParameterHue Then
+                If nSaturation <> 100 Then
+                    nSaturation = 100
+                    nColorRGB = ColorHSVToRGB(nHue, nLuminance, nSaturation)
+                End If
+            Else
+                If nLuminance <> 100 Then
+                    nLuminance = 100
+                    nColorRGB = ColorHSVToRGB(nHue, nLuminance, nSaturation)
+                End If
+            End If
+        End If
     End If
 End Sub
     
