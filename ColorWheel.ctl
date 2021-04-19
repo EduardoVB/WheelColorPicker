@@ -823,7 +823,7 @@ Private Sub InitWheel()
     Dim iRadius As Long
     Dim iDistanceToCircumference As Long
     
-    If mDiameter = picWheel.ScaleWidth - 8 Then Exit Sub
+    If mDiameter = picWheel.ScaleWidth - 16 Then Exit Sub
     
     mCx = picWheel.ScaleWidth / 2
     mCy = picWheel.ScaleHeight / 2
@@ -3103,13 +3103,14 @@ Public Property Get hWnd() As Long
     hWnd = UserControl.hWnd
 End Property
 
-Private Function EnsurePrimary(nColor As Long, Optional nTolerance As Byte = 5) As Long
+Private Function EnsurePrimary(nColor As Long) As Long
     Dim iRGB As RGBQuad
     Dim iHight As Byte
     Dim iLow As Byte
+    Const cTolerance As Byte = 6
     
-    iHight = 255 - nTolerance
-    iLow = nTolerance
+    iHight = 255 - cTolerance
+    iLow = cTolerance
     
     CopyMemory iRGB, nColor, 4
     If ((iRGB.R >= iHight) Or (iRGB.R <= iLow)) And ((iRGB.G >= iHight) Or (iRGB.G <= iLow)) And ((iRGB.B >= iHight) Or (iRGB.B <= iLow)) Then
