@@ -7,7 +7,7 @@ Begin VB.UserControl ColorWheel
    EditAtDesignTime=   -1  'True
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   7.5
+      Size            =   7.8
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -24,9 +24,9 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       Height          =   2124
       Left            =   2904
-      ScaleHeight     =   142
+      ScaleHeight     =   177
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   9
+      ScaleWidth      =   11
       TabIndex        =   0
       Top             =   120
       Width           =   132
@@ -41,7 +41,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       Height          =   228
       Left            =   72
-      ScaleHeight     =   225
+      ScaleHeight     =   228
       ScaleWidth      =   780
       TabIndex        =   2
       TabStop         =   0   'False
@@ -103,7 +103,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -112,9 +112,9 @@ Begin VB.UserControl ColorWheel
       EndProperty
       Height          =   372
       Left            =   720
-      ScaleHeight     =   25
+      ScaleHeight     =   31
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   22
+      ScaleWidth      =   27
       TabIndex        =   8
       TabStop         =   0   'False
       Top             =   -48
@@ -128,7 +128,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -138,9 +138,9 @@ Begin VB.UserControl ColorWheel
       ForeColor       =   &H80000008&
       Height          =   2124
       Left            =   2496
-      ScaleHeight     =   142
+      ScaleHeight     =   177
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   22
+      ScaleWidth      =   27
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   144
@@ -153,7 +153,7 @@ Begin VB.UserControl ColorWheel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -163,9 +163,9 @@ Begin VB.UserControl ColorWheel
       ForeColor       =   &H80000008&
       Height          =   2124
       Left            =   144
-      ScaleHeight     =   142
+      ScaleHeight     =   177
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   150
+      ScaleWidth      =   187
       TabIndex        =   6
       TabStop         =   0   'False
       Top             =   168
@@ -462,7 +462,7 @@ Private Sub cboSelectionParameter_Click()
 End Sub
 
 Private Sub chkDrawFixed_Click()
-    DrawFixed = (chkDrawFixed.Value = 1)
+    DrawFixed = (chkDrawFixed.value = 1)
 End Sub
 
 Private Sub mForm_Load()
@@ -603,7 +603,7 @@ Private Sub UserControl_InitProperties()
     mDrawFixed = cDefaultDrawFixed
     mSelectionParameter = cDefaultSelectionParameter
     LoadcboSelectionParameter
-    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = 0
+    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
     mColorSystem = cDefaultColorSystem
     cboColorSystem.ListIndex = mColorSystem
     mBackColor = cDefaultBackColor
@@ -646,7 +646,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mDrawFixed = PropBag.ReadProperty("DrawFixed", cDefaultDrawFixed)
     mSelectionParameter = PropBag.ReadProperty("SelectionParameter", cDefaultSelectionParameter)
     LoadcboSelectionParameter
-    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = 0
+    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
     mColorSystem = PropBag.ReadProperty("ColorSystem", cDefaultColorSystem)
     cboColorSystem.ListIndex = mColorSystem
     mBackColor = PropBag.ReadProperty("BackColor", cDefaultBackColor)
@@ -785,7 +785,7 @@ Private Sub Init()
     picColorSystem.Visible = mColorSystemControlVisible
     cboColorSystem.Visible = mColorSystemControlVisible
     chkDrawFixed.Visible = mDrawFixedControlVisible
-    chkDrawFixed.Value = Abs(CLng(mDrawFixed))
+    chkDrawFixed.value = Abs(CLng(mDrawFixed))
     
     iColor = mColor
     mColor = -1
@@ -1520,9 +1520,9 @@ Private Sub picWheel_MouseUp(Button As Integer, Shift As Integer, X As Single, Y
     End If
 End Sub
 
-Public Property Let Color(Value As OLE_COLOR)
+Public Property Let Color(value As OLE_COLOR)
     mChangingParameter = True
-    SetColor Value
+    SetColor value
     mChangingParameter = False
 End Property
 
@@ -1531,7 +1531,7 @@ Attribute Color.VB_MemberFlags = "200"
     Color = mColor
 End Property
 
-Private Function SetColor(Value As Long) As Boolean
+Private Function SetColor(value As Long) As Boolean
     Dim iPrev As Long
     Dim iColor As Long
     Dim iH1 As Double
@@ -1539,10 +1539,10 @@ Private Function SetColor(Value As Long) As Boolean
     Dim iS1 As Double
     Dim iRGB As RGBQuad
     
-    If Value = -1 Then Exit Function
+    If value = -1 Then Exit Function
     
     iPrev = mColor
-    mColor = Value
+    mColor = value
     If (mColor <> iPrev) Or mChangingColorSystemOrInitializing Then
         mSettingColor = True
         TranslateColor mColor, 0, iColor
@@ -1638,13 +1638,13 @@ Public Property Get H() As Integer
     H = mH
 End Property
 
-Public Property Let H(Value As Integer)
-    If Value <> mH Then
-        If (Value < 0) Or (Value > mH_Max) Then
+Public Property Let H(value As Integer)
+    If value <> mH Then
+        If (value < 0) Or (value > mH_Max) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mH = Value
+        mH = value
         If mH = mH_Max Then mH = 0
         mChangingHue = True
         mChangingParameter = True
@@ -1667,13 +1667,13 @@ Public Property Get L() As Integer
     L = mL
 End Property
 
-Public Property Let L(Value As Integer)
-    If Value <> mL Then
-        If (Value < 0) Or (Value > mL_Max) Then
+Public Property Let L(value As Integer)
+    If value <> mL Then
+        If (value < 0) Or (value > mL_Max) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mL = Value
+        mL = value
         mChangingLuminance = True
         mChangingParameter = True
         If Not SetColor(ColorCurrentColorSystemToRGB(mH, mL, mS)) Then
@@ -1695,8 +1695,8 @@ Public Property Get V() As Integer
     V = mL
 End Property
 
-Public Property Let V(Value As Integer)
-    L = Value
+Public Property Let V(value As Integer)
+    L = value
 End Property
 
 
@@ -1704,13 +1704,13 @@ Public Property Get S() As Integer
     S = mS
 End Property
 
-Public Property Let S(Value As Integer)
-    If Value <> mS Then
-        If (Value < 0) Or (Value > mS_Max) Then
+Public Property Let S(value As Integer)
+    If value <> mS Then
+        If (value < 0) Or (value > mS_Max) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mS = Value
+        mS = value
         mChangingSaturation = True
         mChangingParameter = True
         If Not SetColor(ColorCurrentColorSystemToRGB(mH, mL, mS)) Then
@@ -1732,13 +1732,13 @@ Public Property Get R() As Integer
     R = mR
 End Property
 
-Public Property Let R(Value As Integer)
-    If Value <> mR Then
-        If (Value < 0) Or (Value > 255) Then
+Public Property Let R(value As Integer)
+    If value <> mR Then
+        If (value < 0) Or (value > 255) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mR = Value
+        mR = value
         mChangingParameter = True
         SetColor RGB(mR, mG, mB)
         mChangingParameter = False
@@ -1751,13 +1751,13 @@ Public Property Get G() As Integer
     G = mG
 End Property
 
-Public Property Let G(Value As Integer)
-    If Value <> mG Then
-        If (Value < 0) Or (Value > 255) Then
+Public Property Let G(value As Integer)
+    If value <> mG Then
+        If (value < 0) Or (value > 255) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mG = Value
+        mG = value
         mChangingParameter = True
         SetColor RGB(mR, mG, mB)
         mChangingParameter = False
@@ -1770,13 +1770,13 @@ Public Property Get B() As Integer
     B = mB
 End Property
 
-Public Property Let B(Value As Integer)
-    If Value <> mB Then
-        If (Value < 0) Or (Value > 255) Then
+Public Property Let B(value As Integer)
+    If value <> mB Then
+        If (value < 0) Or (value > 255) Then
             Err.Raise 380, TypeName(Me)
             Exit Property
         End If
-        mB = Value
+        mB = value
         mChangingParameter = True
         SetColor RGB(mR, mG, mB)
         mChangingParameter = False
@@ -2255,7 +2255,7 @@ Public Property Let DrawFixed(nValue As Boolean)
     If nValue <> mDrawFixed Then
         mDrawFixed = nValue
         If mInitialized Then PropertyChanged "DrawFixed"
-        chkDrawFixed.Value = Abs(CLng(mDrawFixed))
+        chkDrawFixed.value = Abs(CLng(mDrawFixed))
         DrawWheel
         DrawShades
         If mRaiseEvents Then RaiseEvent DrawFixedChange
@@ -2374,9 +2374,9 @@ Public Property Get ColorSystem() As CDColorSystemConstants
     ColorSystem = mColorSystem
 End Property
 
-Public Property Let BackColor(Value As OLE_COLOR)
-    If Value <> mBackColor Then
-        mBackColor = Value
+Public Property Let BackColor(value As OLE_COLOR)
+    If value <> mBackColor Then
+        mBackColor = value
         SetBackColor
         mDiameter = 0
         Init
@@ -2921,7 +2921,10 @@ End Property
 '=========================================================================
 Private Sub pvSubclass()
     If mUserControlHwnd <> 0 Then
-        If (Not InIDE) Or cSUBCLASS_IN_IDE Then
+        Dim iInIDE As Boolean
+        
+        Debug.Assert MakeTrue(iInIDE)
+        If (Not iInIDE) Or cSUBCLASS_IN_IDE Then
             Set m_pSubclass = InitSubclassingThunk(mUserControlHwnd, InitAddressOfMethod().SubclassProc(0, 0, 0, 0, 0))
         End If
     End If
@@ -3073,30 +3076,9 @@ End Function
 
 '--- End for MST subclassing (2)
 
-Private Function InIDE() As Boolean
-    Static sValue As Long
-    Dim iErrNumber As Integer
-    Dim iErrDesc As String
-    Dim iErrSource As String
-    
-    If sValue = 0 Then
-        iErrNumber = Err.Number
-        iErrDesc = Err.Description
-        iErrSource = Err.Source
-        Err.Clear
-        On Error Resume Next
-        Debug.Print 1 / 0
-        If Err.Number Then
-            sValue = 1
-        Else
-            sValue = 2
-        End If
-        Err.Clear
-        Err.Number = iErrNumber
-        Err.Description = iErrDesc
-        Err.Source = iErrSource
-    End If
-    InIDE = (sValue = 1)
+Private Function MakeTrue(value As Boolean) As Boolean
+    MakeTrue = True
+    value = True
 End Function
 
 Public Property Get hWnd() As Long
