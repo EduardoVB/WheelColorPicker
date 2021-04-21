@@ -458,7 +458,9 @@ Private Sub cboColorSystem_Click()
 End Sub
 
 Private Sub cboSelectionParameter_Click()
-    SelectionParameter = cboSelectionParameter.ItemData(cboSelectionParameter.ListIndex)
+    If cboSelectionParameter.ListIndex > -1 Then
+        SelectionParameter = cboSelectionParameter.ItemData(cboSelectionParameter.ListIndex)
+    End If
 End Sub
 
 Private Sub chkDrawFixed_Click()
@@ -603,7 +605,13 @@ Private Sub UserControl_InitProperties()
     mDrawFixed = cDefaultDrawFixed
     mSelectionParameter = cDefaultSelectionParameter
     LoadcboSelectionParameter
-    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
+    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then
+        If mSelectionParametersAvailable = cdSelectionParametersNone Then
+            cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
+        Else
+            cboSelectionParameter.ListIndex = cboSelectionParameter.ListIndex = 0
+        End If
+    End If
     mColorSystem = cDefaultColorSystem
     cboColorSystem.ListIndex = mColorSystem
     mBackColor = cDefaultBackColor
@@ -646,7 +654,13 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mDrawFixed = PropBag.ReadProperty("DrawFixed", cDefaultDrawFixed)
     mSelectionParameter = PropBag.ReadProperty("SelectionParameter", cDefaultSelectionParameter)
     LoadcboSelectionParameter
-    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
+    If Not SelectInListByItemData(cboSelectionParameter, mSelectionParameter) Then
+        If mSelectionParametersAvailable = cdSelectionParametersNone Then
+            cboSelectionParameter.ListIndex = cboSelectionParameter.ListCount - 1
+        Else
+            cboSelectionParameter.ListIndex = cboSelectionParameter.ListIndex = 0
+        End If
+    End If
     mColorSystem = PropBag.ReadProperty("ColorSystem", cDefaultColorSystem)
     cboColorSystem.ListIndex = mColorSystem
     mBackColor = PropBag.ReadProperty("BackColor", cDefaultBackColor)
