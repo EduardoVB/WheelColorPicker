@@ -13,7 +13,7 @@ Public Sub SetColorDialogCaptions(nDialog As ColorDialog)
         .SetCaption cdCaptionGreen, "Verde"
         .SetCaption cdCaptionHex, "Hex"
         .SetCaption cdCaptionHue, "Matiz"
-        .SetCaption cdCaptionInvalidColorMessage, "El color no es v·lido"
+        .SetCaption cdCaptionInvalidColorMessage, "El color no es v√°lido"
         .SetCaption cdCaptionLum, "Lum."
         .SetCaption cdCaptionMenuForgetRecent, "Olvidar"
         .SetCaption cdCaptionMenuClearAllRecent, "Borrar colores recientes"
@@ -23,9 +23,9 @@ Public Sub SetColorDialogCaptions(nDialog As ColorDialog)
         .SetCaption cdCaptionRecent, "Recientes"
         .SetCaption cdCaptionRed, "Rojo"
         .SetCaption cdCaptionSat, "Sat."
-        .SetCaption cdCaptionSelectionParameterToolTipText, "Seleccionar par·metro"
+        .SetCaption cdCaptionSelectionParameterToolTipText, "Seleccionar par√°metro"
         .SetCaption cdCaptionVal, "Valor"
         .SetCaption cdCaptionToolTipMouseWheelBeginning, "Mantenga presionada la tecla Control para navegar"
-        .SetCaption cdCaptionToolTipMouseWheelEnding, "con la rueda del mouse, May˙sculas para ir lento"
+        .SetCaption cdCaptionToolTipMouseWheelEnding, "con la rueda del mouse, May√∫sculas para ir lento"
     End With
 End Sub
